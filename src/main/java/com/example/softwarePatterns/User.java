@@ -40,7 +40,7 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+ 
 	public ArrayList<StockItem> getItems() {
 		return items;
 	}
