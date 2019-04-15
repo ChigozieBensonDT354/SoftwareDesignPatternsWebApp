@@ -6,11 +6,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 
@@ -19,19 +22,54 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id", cascade = CascadeType.ALL)
+  //  ArrayList<Order>orders = new ArrayList<>();
+    private Set<Order>orders = new HashSet<>();
+    /*@OneToMany
+    private Set< Thought> thoughts = new HashSet<>();*/
+    @OneToOne(cascade = CascadeType.ALL)
+    Cart cart;
 
-    private String name;
+    
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	private String name;
 
     private String email;
     
     private String password;
     
     private String address;
-   // @OneToMany
-    ArrayList<StockItem> items = new ArrayList<>();
     
-    /*@OneToMany
-    private Set< Thought> thoughts = new HashSet<>();*/
+    private String paymentMethod;
+   public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	// @OneToMany
+    //ArrayList<StockItem> items = new ArrayList<>();
+    
+   
     
 	public String getAddress() {
 		return address;
@@ -41,13 +79,7 @@ public class User {
 		this.address = address;
 	}
  
-	public ArrayList<StockItem> getItems() {
-		return items;
-	}
-
-	public void setItems(ArrayList<StockItem> items) {
-		this.items = items;
-	}
+	
     
     /*@OneToMany
     private Set< Thought> thoughts = new HashSet<>();*/
@@ -100,11 +132,13 @@ public class User {
 		
 	}
 	
-	public User(int id, String name, String email, String password) {
+	public User(int id, String name, String email, String password, String address, String payment) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.address = address;
+		this.paymentMethod = payment;
 	}
 
 

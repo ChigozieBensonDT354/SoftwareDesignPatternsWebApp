@@ -43,14 +43,14 @@ public class UserService {
 		userRepo.deleteById(id);
 	}
 	
-	public User register(String name, String password, String email) {
+	public User register(String name, String password, String email, String address, String payment) {
 		
 		
 		List<User>users = new ArrayList<>();
 		
 		userRepo.findAll().forEach(users::add);
 		int id = users.size() +1;
-		User u1 = new User(id, name,email,password);
+		User u1 = new User(id, name,email,password,address,payment);
 		
 		
 		
