@@ -10,6 +10,17 @@
 <h1>PAY FOR YOUR PRODUCTS HERE</h1>
 <body>
 the product id is ${id}!
+ <p>
+    items in your cart :<br />
+    <c:forEach var="items" items="${cartItems}">
+        
+       <div class = "item"><div class="start"><br>${items.title}<br><img src="${items.image}" width="193", height="130"/></div></div>
+    </c:forEach>
+  </p>
+<br>
+<form action="confirmBuy" method="post">
+		<button id="itemButton" class="form-control">Confirm</button>
+		</form>
 <!-- 
     <h2>Hello 
 items</h2>

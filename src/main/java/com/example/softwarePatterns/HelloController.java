@@ -168,6 +168,11 @@ private UserRepository userRepository;
     	model.addAttribute("id", id);
     	StockItem item = itemservice.getItem(id);
     	System.out.println(item.getTitle());
+    	Cart cart = new Cart();
+    	cart.getItems().add(item);
+    	model.addAttribute("cartItems",cart.getItems());
+    	User user = (User) request.getSession().getAttribute("user");
+    	user.setCart(cart);
     	//i can get the item id and then do find by id
     	return "payforproduct";
     	
