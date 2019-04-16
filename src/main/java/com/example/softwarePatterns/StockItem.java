@@ -70,6 +70,8 @@ public class StockItem {
 		this.String = String;
 	}
 	
+	private String image;
+	
 	
 
 }
