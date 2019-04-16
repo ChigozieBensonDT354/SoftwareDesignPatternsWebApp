@@ -9,6 +9,7 @@
 </head>
 <h1>PAY FOR YOUR PRODUCTS HERE</h1>
 <body>
+the product id is ${id}!
 <!-- 
     <h2>Hello 
 items</h2>

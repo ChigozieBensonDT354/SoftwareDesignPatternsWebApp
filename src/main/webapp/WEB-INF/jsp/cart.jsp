@@ -11,7 +11,7 @@
     <h2>Hello 
 items</h2>
  <p>
-   <h1> items in your cart :</h1>
+   <h1> items to choose from</h1>
     <c:forEach var="items" items="${lists}">
  
    <div class = "item"><div class="start"><img src="${items.image}" width="193", height="130"/>

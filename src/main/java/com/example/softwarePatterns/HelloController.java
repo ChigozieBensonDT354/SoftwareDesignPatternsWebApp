@@ -31,6 +31,9 @@ private UserRepository userRepository;
 	@Autowired
 	private StockItemRepository itemRepo;
 	
+	@Autowired
+	ItemService itemservice;
+	
 	
 //    @GetMapping({"/", "/hello"})
 //    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
@@ -162,6 +165,9 @@ private UserRepository userRepository;
     public String pay(Model model, HttpServletRequest request, @RequestParam(value="itemId") int id) {
     	// id = (int) request.getSession().getAttribute("chosenID");
     	System.out.println("The id is " + id);
+    	model.addAttribute("id", id);
+    	StockItem item = itemservice.getItem(id);
+    	System.out.println(item.getTitle());
     	//i can get the item id and then do find by id
     	return "payforproduct";
     	
@@ -182,6 +188,7 @@ private UserRepository userRepository;
     	items.add(item2);
     	itemRepo.save(item);
     	itemRepo.save(item2);
+    	//*************** have this page displaying items from db 
     	//request.getSession().setAttribute("chosenID", id);
     	
     	model.addAttribute("lists",this.items);
