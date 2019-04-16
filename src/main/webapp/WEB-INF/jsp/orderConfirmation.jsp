@@ -34,7 +34,7 @@ the product id is ${id}!
     <c:forEach var="items" items="${cartItems}">
         
        <div class = "item"><div class="start"><br>${items.title}<br><img src="${items.image}" width="193", height="130"/><br>
-       <label>Comments</label><br><textarea rows="5" cols="20"></textarea ><br><span class="heading">User Rating</span>
+       <label>Comments</label><br><form method="post" action="postComment"><input type="hidden" name="itemId" value="${items.id}"><textarea name="comment"rows="5" value="comment" cols="20"></textarea><br><button id="loginButton" class="form-control">Post Comment</button></form><br><span class="heading">User Rating</span>
 <span class="fa fa-star checked"></span>
 <span class="fa fa-star "></span>
 <span class="fa fa-star"></span>

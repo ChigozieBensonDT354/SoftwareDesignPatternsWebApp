@@ -3,6 +3,7 @@ package com.example.softwarePatterns;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,8 +30,19 @@ public class User {
     private Set< Thought> thoughts = new HashSet<>();*/
     @OneToOne(cascade = CascadeType.ALL)
     Cart cart;
+    
+    @OneToMany
+    List<Comment>comments = new ArrayList<>();
 
     
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	public Set<Order> getOrders() {
 		return orders;

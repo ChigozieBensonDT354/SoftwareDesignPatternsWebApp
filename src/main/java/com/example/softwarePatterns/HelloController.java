@@ -40,7 +40,8 @@ private UserRepository userRepository;
 	
 	@Autowired
 	CartRepository cartRepo;
-	
+	@Autowired
+	CommentRepository commentRepo;
 	
 //    @GetMapping({"/", "/hello"})
 //    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
@@ -238,6 +239,25 @@ private UserRepository userRepository;
     	
 		return "orderConfirmation";
     	
+    }
+    
+    @RequestMapping(value = "/postComment")
+    public String postComment(HttpServletRequest request, Model model, @RequestParam(value="comment") String comment, @RequestParam(value="itemId") int id) {
+    	User user = (User) request.getSession().getAttribute("user");
+    	model.addAttribute("cartItems",user.getCart().getItems());
+        Comment comment2 = new Comment();
+        comment2.setContent(comment);
+        //comment2.setUser(user);
+        user.getComments().add(comment2);
+        StockItem item = itemservice.getItem(id);
+       //comment2.setStockItem(item);
+        //commentRepo.save(comment);
+        userRepository.save(user);
+        commentRepo.save(comment2);
+    	System.out.println(comment);
+    	//user.setCart(cart);
+    	
+		return "orderConfirmation";
     }
     
     

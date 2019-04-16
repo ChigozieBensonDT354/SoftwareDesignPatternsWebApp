@@ -2,10 +2,14 @@ package com.example.softwarePatterns;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class StockItem {
@@ -39,6 +43,19 @@ public class StockItem {
 //	public void setQuantity(int quantity) {
 //		this.quantity = quantity;
 //	}
+	
+    @OneToMany
+    List<Comment>comments = new ArrayList<>();
+
+    
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 
 	public String getTitle() {
