@@ -17,7 +17,10 @@ items</h2>
    <div class = "item"><div class="start"><img src="${items.image}" width="193", height="130"/>
    <p class="title"><form method="post" action="pay"><input type="hidden" name="itemId" value="${items.id}"><button id="loginButton" class="form-control">${items.title}</button></form></p></div></div> </c:forEach>
        
-  
+  <br>
+  <form action="confirmCart" method="post">
+		<button id="itemButton" class="form-control">Confirm CART</button>
+		</form>
    
 </body>
 </html>

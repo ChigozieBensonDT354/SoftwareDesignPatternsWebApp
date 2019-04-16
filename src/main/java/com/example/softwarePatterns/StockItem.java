@@ -30,6 +30,17 @@ public class StockItem {
 	Double price;
 	String category;
 	String String;
+//	int quantity;
+//	public int getQuantity() {
+//		return quantity;
+//	}
+//
+//
+//	public void setQuantity(int quantity) {
+//		this.quantity = quantity;
+//	}
+
+
 	public String getTitle() {
 		return title;
 	}

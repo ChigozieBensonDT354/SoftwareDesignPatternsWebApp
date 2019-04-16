@@ -46,7 +46,7 @@ import javax.persistence.Table;
 		}
 		
 		//ArrayList<Cart>carts = new ArrayList<>();
-		@OneToOne( cascade = CascadeType.ALL)
+		@OneToOne//( cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.MERGE})
 		Cart cart;
 
 

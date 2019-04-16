@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
@@ -20,7 +21,7 @@ public class Cart {
 	    private int id;
 	
 	 
-	@OneToMany(cascade = CascadeType.ALL)
+	@ManyToMany//( cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
 	Set<StockItem>items = new HashSet<>();
 	
 	public int getId() {

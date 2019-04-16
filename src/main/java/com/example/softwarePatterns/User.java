@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
     private Set<Order>orders = new HashSet<>();
     /*@OneToMany
     private Set< Thought> thoughts = new HashSet<>();*/

@@ -34,6 +34,12 @@ private UserRepository userRepository;
 	@Autowired
 	ItemService itemservice;
 	
+	@Autowired
+	OrderRepository orderrepo;
+	
+	@Autowired
+	CartRepository cartRepo;
+	
 	
 //    @GetMapping({"/", "/hello"})
 //    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
@@ -160,6 +166,7 @@ private UserRepository userRepository;
     	
 		return "itemhome";
     }
+    Cart cart = new Cart();
     
     @RequestMapping(value = "/pay",  method = RequestMethod.POST)
     public String pay(Model model, HttpServletRequest request, @RequestParam(value="itemId") int id) {
@@ -168,15 +175,35 @@ private UserRepository userRepository;
     	model.addAttribute("id", id);
     	StockItem item = itemservice.getItem(id);
     	System.out.println(item.getTitle());
-    	Cart cart = new Cart();
+    	if(cart.getItems().contains(item)) {
+    		
+    	}
     	cart.getItems().add(item);
     	model.addAttribute("cartItems",cart.getItems());
     	User user = (User) request.getSession().getAttribute("user");
     	user.setCart(cart);
-    	
+    	model.addAttribute("lists",this.items);
     	request.getSession().setAttribute("cart", cart);
+    	System.out.println("THE SIZE OF THE CART IS " + cart.getItems().size() );
     	//i can get the item id and then do find by id
-    	return "payforproduct";
+    	return "cart";
+    	
+    }
+    
+    @RequestMapping(value= "/confirmCart", method = RequestMethod.POST)
+    public String confirmCart(Model model, HttpServletRequest request) {
+    	model.addAttribute("cartItems",cart.getItems());
+//    	//Cart cart = (Cart) request.getSession().getAttribute("cart");
+//    	User user = (User) request.getSession().getAttribute("user");
+//    	Order order = new Order();
+//    	order.setCart(user.getCart());
+//    	user.getOrders().add(order);
+//    	userRepository.save(user);
+//    	//user.setCart(cart);
+    	User user = (User) request.getSession().getAttribute("user");
+    	System.out.println(user.getCart().getItems().toString() + user.getCart().getItems().size());
+    	
+		return "payforproduct";
     	
     }
     
@@ -186,8 +213,16 @@ private UserRepository userRepository;
     	//Cart cart = (Cart) request.getSession().getAttribute("cart");
     	User user = (User) request.getSession().getAttribute("user");
     	Order order = new Order();
+    	String orderName ="";
+    	for(StockItem stock: user.getCart().getItems()) {
+    		orderName = orderName + " " + stock.getTitle();
+    	}
+    	order.setName("Order: " + orderName);
     	order.setCart(user.getCart());
     	user.getOrders().add(order);
+    	cartRepo.save(cart);
+    	orderrepo.save(order);
+    	
     	userRepository.save(user);
     	//user.setCart(cart);
     	
@@ -200,8 +235,12 @@ private UserRepository userRepository;
     	StockItem item = new StockItem();
     	item.setCategory("food");
     	item.setTitle("pizza");
+    	
+    //	item.setQuantity(10);
+    	
     	StockItem item2 = new StockItem();
     	item2.setCategory("food");
+    	//item2.setQuantity(10);
     	item.setImage("http://topqualitypizzas.ca/wp-content/uploads/2015/11/GARDEN-VEGGIE-SUPREME.jpg");
         item2.setImage("https://png.pngtree.com/element_pic/17/02/23/8a1ce248ab44efc7b37adad0b7b2d933.jpg");
         
