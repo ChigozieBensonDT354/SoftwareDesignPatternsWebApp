@@ -224,10 +224,21 @@ private UserRepository userRepository;
     	orderrepo.save(order);
     	
     	userRepository.save(user);
+    	model.addAttribute("cartItems",user.getCart().getItems());
+    	System.out.println(user.getCart().getItems().toString());
+    	System.out.println("reachedHere");
     	//user.setCart(cart);
     	
-		return "success";
+		return "orderConfirmation";
     	
+    }
+    
+    
+    @RequestMapping(value = "/orderConfirmation")
+    public String returnOrderConfirmation(HttpServletRequest request, Model model) {
+    	User user = (User) request.getSession().getAttribute("user");
+    	
+		return "orderConfirmation";
     }
    
     @RequestMapping(value = "/startCart", method = RequestMethod.POST)
