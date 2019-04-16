@@ -34,10 +34,10 @@ the product id is ${id}!
     <c:forEach var="items" items="${cartItems}">
         
        <div class = "item"><div class="start"><br>${items.title}<br><img src="${items.image}" width="193", height="130"/><br>
-       <label>Comments</label><br><textarea rows="5" cols="5"></textarea ><br><span class="heading">User Rating</span>
+       <label>Comments</label><br><textarea rows="5" cols="20"></textarea ><br><span class="heading">User Rating</span>
 <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
+<span class="fa fa-star "></span>
+<span class="fa fa-star"></span>
 <span class="fa fa-star checked"></span>
 <span class="fa fa-star"></span></div></div>
     </c:forEach>

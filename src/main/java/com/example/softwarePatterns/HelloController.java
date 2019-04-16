@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Payload;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -220,7 +221,13 @@ private UserRepository userRepository;
     	order.setName("Order: " + orderName);
     	order.setCart(user.getCart());
     	user.getOrders().add(order);
+    	cart.getItems();
+    	//try {
     	cartRepo.save(cart);
+    	//}catch (DataIntegrityViolationException e) {
+		//	// TODO: handle exception
+    	//	System.out.println("history already exist");
+		//}
     	orderrepo.save(order);
     	
     	userRepository.save(user);
