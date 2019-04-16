@@ -1,6 +1,5 @@
 <!DOCTYPE html>
   <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,13 +10,11 @@
     <h2>Hello 
 items</h2>
  <p>
-   <h1> items in your cart :</h1>
+    items in your cart :<br />
     <c:forEach var="items" items="${lists}">
- 
-   <div class = "item"><div class="start"><img src="${items.image}" width="193", height="130"/>
-   <p class="title"><a  href="${contextPath}/pay">${items.title}</a></p></div></div> </c:forEach>
-       
-  
+        ${items.title}<br />
+    </c:forEach>
+  </p>
    
 </body>
 </html>
