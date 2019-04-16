@@ -155,5 +155,25 @@ private UserRepository userRepository;
     	
 		return "itemhome";
     }
+   
+    @RequestMapping(value = "/startCart", method = RequestMethod.POST)
+    public String cartHome(HttpServletRequest request, Model model) {
+    	StockItem item = new StockItem();
+    	item.setCategory("food");
+    	item.setTitle("pizza");
+    	StockItem item2 = new StockItem();
+    	item2.setCategory("food");
+    	item.setImage("http://topqualitypizzas.ca/wp-content/uploads/2015/11/GARDEN-VEGGIE-SUPREME.jpg");
+        item2.setImage("https://png.pngtree.com/element_pic/17/02/23/8a1ce248ab44efc7b37adad0b7b2d933.jpg");
+        
+    	item2.setTitle("burger");
+    	items.add(item);
+    	items.add(item2);
+    	model.addAttribute("lists",this.items);
+    	User u = (User) request.getSession().getAttribute("user");
+    	//User u2 = (User) session.getAttribute("user");
+    	return "cart";
+    	
+    }
 
 }

@@ -26,8 +26,8 @@
         ${items.title}<br />
     </c:forEach>
   </p>
-  	<form action="addItem" method="post">
-		<button id="itemButton" class="form-control">Add Item</button>
+  	<form action="startCart" method="post">
+		<button id="cartButton" class="form-control">ENTER CART</button>
 		</form>
    
 		
