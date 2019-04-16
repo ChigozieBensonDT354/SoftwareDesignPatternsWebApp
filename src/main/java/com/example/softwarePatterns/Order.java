@@ -2,7 +2,9 @@ package com.example.softwarePatterns;
 
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +46,7 @@ import javax.persistence.Table;
 		}
 		
 		//ArrayList<Cart>carts = new ArrayList<>();
-		@OneToOne
+		@OneToOne( cascade = CascadeType.ALL)
 		Cart cart;
 
 

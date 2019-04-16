@@ -142,9 +142,10 @@ private UserRepository userRepository;
     	u.setCart(cart);
     	Order order = new Order();
     	order.setCart(cart);
-    	order.getCart().getItems();
+    	//order.getCart().getItems();
     	u.getOrders().add(order);
     	userRepository.save(u);
+    	
     	System.out.print(u.getOrders().toString());
 		return "itemHome";
     	

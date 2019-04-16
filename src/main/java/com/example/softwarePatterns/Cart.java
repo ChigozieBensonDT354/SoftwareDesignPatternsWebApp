@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +20,7 @@ public class Cart {
 	    private int id;
 	
 	 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	Set<StockItem>items = new HashSet<>();
 	
 	public int getId() {
