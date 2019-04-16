@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
-import come.example.softwarePatterns.items.StockItemRepository;
-
-
-
 @Controller
 public class HelloController {
 	@Autowired // This means to get the bean called userRepository
@@ -31,6 +27,10 @@ public class HelloController {
 private UserRepository userRepository;
 	@Autowired 
 	private UserService userservice;
+	
+	@Autowired
+	private StockItemRepository itemRepo;
+	
 	
 //    @GetMapping({"/", "/hello"})
 //    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
@@ -147,6 +147,7 @@ private UserRepository userRepository;
     	u.getOrders().add(order);
     	userRepository.save(u);
     	
+    	
     	System.out.print(u.getOrders().toString());
 		return "itemHome";
     	
@@ -157,8 +158,11 @@ private UserRepository userRepository;
 		return "itemhome";
     }
     
-    @GetMapping(value = "/pay")
-    public String pay(Model model) {
+    @RequestMapping(value = "/pay",  method = RequestMethod.POST)
+    public String pay(Model model, HttpServletRequest request, @RequestParam(value="itemId") int id) {
+    	// id = (int) request.getSession().getAttribute("chosenID");
+    	System.out.println("The id is " + id);
+    	//i can get the item id and then do find by id
     	return "payforproduct";
     	
     }
@@ -176,11 +180,18 @@ private UserRepository userRepository;
     	item2.setTitle("burger");
     	items.add(item);
     	items.add(item2);
+    	itemRepo.save(item);
+    	itemRepo.save(item2);
+    	//request.getSession().setAttribute("chosenID", id);
+    	
     	model.addAttribute("lists",this.items);
     	User u = (User) request.getSession().getAttribute("user");
     	//User u2 = (User) session.getAttribute("user");
     	return "cart";
     	
     }
+    
+    
+   
 
 }

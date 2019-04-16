@@ -15,9 +15,10 @@ items</h2>
     <c:forEach var="items" items="${lists}">
  
    <div class = "item"><div class="start"><img src="${items.image}" width="193", height="130"/>
-   <p class="title"><a  href="${contextPath}/pay">${items.title}</a></p></div></div> </c:forEach>
+   <p class="title"><form method="post" action="pay"><input type="hidden" name="itemId" value="${items.id}"><button id="loginButton" class="form-control">${items.title}</button></form></p></div></div> </c:forEach>
        
   
    
 </body>
 </html>
+<a  href="${contextPath}/pay" name="items.id"  value="${items.id}">${items.title}</a>
