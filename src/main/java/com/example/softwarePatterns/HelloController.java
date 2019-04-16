@@ -173,8 +173,25 @@ private UserRepository userRepository;
     	model.addAttribute("cartItems",cart.getItems());
     	User user = (User) request.getSession().getAttribute("user");
     	user.setCart(cart);
+    	
+    	request.getSession().setAttribute("cart", cart);
     	//i can get the item id and then do find by id
     	return "payforproduct";
+    	
+    }
+    
+    
+    @RequestMapping(value= "/confirmBuy", method = RequestMethod.POST)
+    public String confirmBuy(Model model, HttpServletRequest request) {
+    	//Cart cart = (Cart) request.getSession().getAttribute("cart");
+    	User user = (User) request.getSession().getAttribute("user");
+    	Order order = new Order();
+    	order.setCart(user.getCart());
+    	user.getOrders().add(order);
+    	userRepository.save(user);
+    	//user.setCart(cart);
+    	
+		return "success";
     	
     }
    
