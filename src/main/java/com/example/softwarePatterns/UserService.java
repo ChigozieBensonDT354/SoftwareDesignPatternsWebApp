@@ -43,14 +43,20 @@ public class UserService {
 		userRepo.deleteById(id);
 	}
 	
-	public User register(String name, String password, String email, String address, String payment) {
+	
+//	public void updateUser(int i, User user) {
+//		// A save can update and add a User because the User has information about what
+//		// it is an a repository can check if it already exists or not.
+//		userRepo.save(user);
+//	}
+	public User register(String name, String password, String email, String address) {
 		
 		
 		List<User>users = new ArrayList<>();
 		
 		userRepo.findAll().forEach(users::add);
 		int id = users.size() +1;
-		User u1 = new User(id, name,email,password,address,payment);
+		User u1 = new User(id, name,email,password,address);
 		
 		
 		

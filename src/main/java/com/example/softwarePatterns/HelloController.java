@@ -17,7 +17,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * The core (architectural) design pattern you'd like to use is the Model-View-Controller pattern. The Controller is to be represented by a Servlet which (in)directly creates/uses a specific Model and View based on the request. The Model is to be represented by Javabean classes. This is often further dividable in Business Model which contains the actions (behaviour) and Data Model which contains the data (information). The View is to be represented by JSP files which have direct access to the (Data) Model by EL (Expression Language).
 
+Then, there are variations based on how actions and events are handled. The popular ones are:
+
+Request (action) based MVC: this is the simplest to implement. The (Business) Model works directly with HttpServletRequest and HttpServletResponse objects. You have to gather, convert and validate the request parameters (mostly) yourself. The View can be represented by plain vanilla HTML/CSS/JS and it does not maintain state across requests. This is how among others Spring MVC, Struts and Stripes works.
+
+Component based MVC: this is harder to implement. But you end up with a simpler model and view wherein all the "raw" Servlet API is abstracted completely away. You shouldn't have the need to gather, convert and validate the request parameters yourself. The Controller does this task and sets the gathered, converted and validated request parameters in the Model. All you need to do is to define action methods which works directly with the model properties. The View is represented by "components" in flavor of JSP taglibs or XML elements which in turn generates HTML/CSS/JS. The state of the View for the subsequent requests is maintained in the session. This is particularly helpful for server-side conversion, validation and value change events. This is how among others JSF, Wicket and Play! works.
+
+As a side note, hobbying around with a homegrown MVC framework is a very nice learning exercise, and I do recommend it as long as you keep it for personal/private purposes. But once you go professional, then it's strongly recommended to pick an existing framework rather than reinventing your own. Learning an existing and well-developed framework takes in long term less time than developing and maintaining a robust framework yourself.
+
+In the below detailed explanation I'll restrict myself to request based MVC since that's easier to implement.
+ * @author I342031
+ *
+ */
 
 @Controller
 public class HelloController {
@@ -43,6 +57,9 @@ private UserRepository userRepository;
 	@Autowired
 	CommentRepository commentRepo;
 	
+	@Autowired
+	CardRepository cardRepo;
+	
 //    @GetMapping({"/", "/hello"})
 //    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
 //        model.addAttribute("name", name);
@@ -55,6 +72,15 @@ private UserRepository userRepository;
     public String home() {
     	return "index";
     }
+    
+    /**
+     * 
+     * @param name
+     * @param password
+     * @param request
+     * @param model
+     * @return
+     */
     
     @RequestMapping(value="/login", method = RequestMethod.POST)
 	public String verifyLogin(@RequestParam String name, @RequestParam String password, HttpServletRequest request, Model model) {
@@ -112,16 +138,21 @@ private UserRepository userRepository;
 	}
     
     @RequestMapping(value="/register", method = RequestMethod.POST)
-	public String registration(@RequestParam String name, @RequestParam String password,@RequestParam String email, @RequestParam String address, @RequestParam String payment) {
-		User user = userservice.register(name, password, email,address,payment);
+	public String registration(@RequestParam String name, @RequestParam String password,@RequestParam String email, @RequestParam String address, @RequestParam String town, @RequestParam String county, 
+			@RequestParam String number, @RequestParam String payment, @RequestParam String fname, @RequestParam String lname, @RequestParam int date, @RequestParam int year) {
+		User user = userservice.register(name, password, email,address);
+		int type = Integer.parseInt(payment);
+		Card card = new Card(fname, lname, address, town, county, number, type, date, year);
 		if(user == null) {
 			
 			return "login";
 			
 		}
 		else {
+			cardRepo.save(card);
+			user.getCards().add(card);
 		//userservice.addUser(user);s
-		userservice.addUser(user);
+		userservice.updateUser(user.getId(), user);
 		return "success";
 		}
 		
@@ -232,6 +263,7 @@ private UserRepository userRepository;
     	orderrepo.save(order);
     	
     	userRepository.save(user);
+    	//userservice.updateUser(user.getId(), user);
     	model.addAttribute("cartItems",user.getCart().getItems());
     	System.out.println(user.getCart().getItems().toString());
     	System.out.println("reachedHere");

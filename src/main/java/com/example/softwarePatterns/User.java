@@ -16,6 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -30,7 +33,7 @@ public class User {
     private Set< Thought> thoughts = new HashSet<>();*/
     @OneToOne(cascade = CascadeType.ALL)
     Cart cart;
-    
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
     List<Comment>comments = new ArrayList<>();
 
@@ -68,7 +71,42 @@ public class User {
     
     private String address;
     
-    private String paymentMethod;
+    private String fName;
+    
+    private String lName;
+    
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
+    List<Card>cards = new ArrayList<>();
+    
+    
+    
+ 
+	public List<Card> getCards() {
+		return cards;
+	}
+
+	public void setCards(List<Card> cards) {
+		this.cards = cards;
+	}
+
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
+	public String getlName() {
+		return lName;
+	}
+
+	public void setlName(String lName) {
+		this.lName = lName;
+	}
+
+	private String paymentMethod;
    public String getPaymentMethod() {
 		return paymentMethod;
 	}
@@ -143,13 +181,13 @@ public class User {
 		
 	}
 	
-	public User(int id, String name, String email, String password, String address, String payment) {
+	public User(int id, String name, String email, String password, String address) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.address = address;
-		this.paymentMethod = payment;
+		//this.paymentMethod = payment;
 	}
 
 
