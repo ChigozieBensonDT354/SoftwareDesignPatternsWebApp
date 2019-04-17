@@ -5,7 +5,9 @@ package com.example.softwarePatterns;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +46,7 @@ public class StockItem {
 //		this.quantity = quantity;
 //	}
 	
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
     List<Comment>comments = new ArrayList<>();
 
     

@@ -31,7 +31,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     Cart cart;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
     List<Comment>comments = new ArrayList<>();
 
     

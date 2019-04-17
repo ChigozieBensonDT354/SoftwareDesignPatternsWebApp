@@ -242,17 +242,19 @@ private UserRepository userRepository;
     }
     
     @RequestMapping(value = "/postComment")
-    public String postComment(HttpServletRequest request, Model model, @RequestParam(value="comment") String comment, @RequestParam(value="itemId") int id) {
+    public String postComment(HttpServletRequest request, Model model, @RequestParam(value="comment") String comment, @RequestParam(value="itemId") int id, @RequestParam int rating) {
     	User user = (User) request.getSession().getAttribute("user");
     	model.addAttribute("cartItems",user.getCart().getItems());
         Comment comment2 = new Comment();
         comment2.setContent(comment);
+        comment2.setRating(rating);
         //comment2.setUser(user);
         user.getComments().add(comment2);
         StockItem item = itemservice.getItem(id);
+        item.getComments().add(comment2);
        //comment2.setStockItem(item);
         //commentRepo.save(comment);
-        userRepository.save(user);
+        //userRepository.save(user);
         commentRepo.save(comment2);
     	System.out.println(comment);
     	//user.setCart(cart);
