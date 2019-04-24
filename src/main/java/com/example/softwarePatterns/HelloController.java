@@ -60,6 +60,10 @@ private UserRepository userRepository;
 	@Autowired
 	CardRepository cardRepo;
 	
+	
+	@Autowired
+	CardValidator cardValidator = new CardValidator();
+	
 //    @GetMapping({"/", "/hello"})
 //    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
 //        model.addAttribute("name", name);
@@ -137,20 +141,42 @@ private UserRepository userRepository;
 		return userRepository.findAll();
 	}
     
+    @RequestMapping(value = "/searchProducts", method = RequestMethod.GET)
+	public String searchProducts(Model model, @RequestParam("keyword") String keyword) {
+		ArrayList<StockItem> items = new ArrayList<>();
+		System.out.println("here " + itemservice.getAllItems().size());
+		for(int i=0; i<itemservice.getAllItems().size();i++) {
+			//itemservice.getAllItems().get(i).getTitle().contains(keyword)
+			if(itemservice.getAllItems().get(i).getTitle().contains(keyword)  ) {
+				items.add(itemservice.getAllItems().get(i));
+			}
+		}
+		System.out.println(items.size());
+		model.addAttribute("lists",items);
+		return "cart";
+	}
+    
     @RequestMapping(value="/register", method = RequestMethod.POST)
 	public String registration(@RequestParam String name, @RequestParam String password,@RequestParam String email, @RequestParam String address, @RequestParam String town, @RequestParam String county, 
 			@RequestParam String number, @RequestParam String payment, @RequestParam String fname, @RequestParam String lname, @RequestParam int date, @RequestParam int year) {
 		User user = userservice.register(name, password, email,address);
 		int type = Integer.parseInt(payment);
 		Card card = new Card(fname, lname, address, town, county, number, type, date, year);
+		card = cardValidator.initComponents(card);
+		System.out.println(card.toString());
+		
+		
+			//System.out.println("Card is valid");
+			cardRepo.save(card);
+			user.getCards().add(card);
+		
 		if(user == null) {
 			
 			return "login";
 			
 		}
 		else {
-			cardRepo.save(card);
-			user.getCards().add(card);
+			
 		//userservice.addUser(user);s
 		userservice.updateUser(user.getId(), user);
 		return "success";
@@ -301,9 +327,28 @@ private UserRepository userRepository;
     	
 		return "orderConfirmation";
     }
-   
-    @RequestMapping(value = "/startCart", method = RequestMethod.POST)
-    public String cartHome(HttpServletRequest request, Model model) {
+    
+    @RequestMapping(value = "/confirmLoyaltyCard")
+    public String pickLoyaltyCard(HttpServletRequest request, Model model, @RequestParam String loyaltyCard) {
+    	User user = (User) request.getSession().getAttribute("user");
+    	model.addAttribute("card", loyaltyCard);
+    	
+    	
+    	if(loyaltyCard.equalsIgnoreCase("Gold"))
+    	{
+    		
+    		cart.setTotal(cart.discount(new Gold(loyaltyCard)));
+    	}
+    	else if(loyaltyCard.equalsIgnoreCase("Silver"))
+    	{
+    		cart.discount(new Silver(loyaltyCard));
+    	} else if(loyaltyCard.equalsIgnoreCase("Standard"))
+    	{
+    		cart.discount(new Standard(loyaltyCard));
+    	}
+    	
+    	System.out.println("The price is " + cart.getTotal());
+    	
     	StockItem item = new StockItem();
     	item.setCategory("food");
     	item.setTitle("pizza");
@@ -317,6 +362,37 @@ private UserRepository userRepository;
         item2.setImage("https://png.pngtree.com/element_pic/17/02/23/8a1ce248ab44efc7b37adad0b7b2d933.jpg");
         
     	item2.setTitle("burger");
+    	//items.add(item);
+    	//items.add(item2);
+    	itemRepo.save(item);
+    	itemRepo.save(item2);
+    	//*************** have this page displaying items from db 
+    	//request.getSession().setAttribute("chosenID", id);
+    	
+    	model.addAttribute("lists",this.items);
+    	User u = (User) request.getSession().getAttribute("user");
+    	//User u2 = (User) session.getAttribute("user");
+    	
+		return "cart";
+    }
+   
+    @RequestMapping(value = "/startCart", method = RequestMethod.POST)
+    public String cartHome(HttpServletRequest request, Model model) {
+    	StockItem item = new StockItem();
+    	item.setCategory("food");
+    	item.setTitle("pizza");
+    	item.setPrice(20.0);
+    	
+    //	item.setQuantity(10);
+    	
+    	StockItem item2 = new StockItem();
+    	item2.setCategory("food");
+    	//item2.setQuantity(10);
+    	item.setImage("http://topqualitypizzas.ca/wp-content/uploads/2015/11/GARDEN-VEGGIE-SUPREME.jpg");
+        item2.setImage("https://png.pngtree.com/element_pic/17/02/23/8a1ce248ab44efc7b37adad0b7b2d933.jpg");
+        
+    	item2.setTitle("burger");
+    	item2.setPrice(30.0);
     	items.add(item);
     	items.add(item2);
     	itemRepo.save(item);

@@ -23,6 +23,7 @@ public class Cart {
 	 @Id
 	    @GeneratedValue(strategy=GenerationType.AUTO)
 	    private int id;
+	 double total = 0.0;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 //	@ManyToMany(mappedBy="title")//, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)//{CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
@@ -44,6 +45,33 @@ public class Cart {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public double calcTotalCost() {
+		 
+	    
+	    for (StockItem item : items) {
+	 
+	total += item.getPrice();
+	    }
+	 
+	    return total;
+	  }
+	 
+	  public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public double discount(LoyaltyCardDiscount method) {
+	 
+	    double totalCost = calcTotalCost();
+	   // setTotal(totalCost);
+	    return method.discount(totalCost);
+	    
+	  }
 
 //	public Set<StockItem> getItems() {
 //		return items;
