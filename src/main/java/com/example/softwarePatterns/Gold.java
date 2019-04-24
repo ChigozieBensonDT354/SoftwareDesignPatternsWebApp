@@ -1,8 +1,12 @@
 package com.example.softwarePatterns;
 
 public class Gold implements LoyaltyCardDiscount{
+	
+	 private static Gold instance = new Gold();
+	 
+	 private Gold() {}
 
-	 private final String name;
+	//private final String name;
 	 
 	@Override
 	public double discount(double amount) {
@@ -11,10 +15,15 @@ public class Gold implements LoyaltyCardDiscount{
 		return amount;
 	}
 	
-	public Gold(String name ) {
+	 //Get the only object available
+	   public static Gold getInstance(){
+	      return instance;
+	   }
+	
+	/*public Gold(String name ) {
 		
 		this.name = name;
 	   
-	}
+	}*/
 
 }

@@ -336,14 +336,16 @@ private UserRepository userRepository;
     	
     	if(loyaltyCard.equalsIgnoreCase("Gold"))
     	{
-    		
-    		cart.setTotal(cart.discount(new Gold(loyaltyCard)));
+    		Gold gold = Gold.getInstance();
+    		cart.setTotal(cart.discount(gold));
     	}
     	else if(loyaltyCard.equalsIgnoreCase("Silver"))
     	{
+    		//NEED TO ADD SILVER
     		cart.discount(new Silver(loyaltyCard));
     	} else if(loyaltyCard.equalsIgnoreCase("Standard"))
     	{
+    		//NEED TO ADD STANDARD
     		cart.discount(new Standard(loyaltyCard));
     	}
     	
