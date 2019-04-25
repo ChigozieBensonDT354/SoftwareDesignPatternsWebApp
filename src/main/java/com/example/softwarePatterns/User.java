@@ -193,7 +193,7 @@ public class User implements UserType {
 	@Override
 	public String login() {
 		// TODO Auto-generated method stub
-		return "customer";
+		return "success";
 	}
 	
 

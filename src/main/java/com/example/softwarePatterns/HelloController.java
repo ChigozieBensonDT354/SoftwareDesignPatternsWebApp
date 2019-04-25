@@ -91,31 +91,35 @@ private UserRepository userRepository;
 	public String verifyLogin(@RequestParam String name, @RequestParam String password, HttpServletRequest request, Model model) {
 		User user = userservice.login(name, password);
 		
-	
-		if(user == null) {
+		UserType user1;
+	/*	if(user == null) {
 			model.addAttribute("loginError", "Error logging in, please try again");
 			return "login";
 			
 			
+		}*/
+		if(user != null) {
+			int id;
+			User loggedInUser = user;
+			id = loggedInUser.getId();
+			model.addAttribute(name, user.getName());
+			System.out.print(loggedInUser.getId());
+			
+			request.getSession().setAttribute("user", loggedInUser);
+			session = request.getSession(true);
+			//session.setAttribute("loggedInUser", user);
+			user1 = new User();
+			return user1.login();
 		}
 		else if(name.equals("Admin") && password.equals("password")) {
-			UserType user1 = new Admin();
+			 user1 = new Admin();
 			return user1.login();
 			//return "admin";
 		}
 		else {
-		
-	int id;
-		User loggedInUser = user;
-		id = loggedInUser.getId();
-		model.addAttribute(name, user.getName());
-		System.out.print(loggedInUser.getId());
-		
-		request.getSession().setAttribute("user", loggedInUser);
-		session = request.getSession(true);
-		//session.setAttribute("loggedInUser", user);
-		
-		return "success";
+			model.addAttribute("loginError", "Error logging in, please try again");
+			return "login";
+	
 		}
 	}
 	ArrayList<StockItem>items = new ArrayList<>();

@@ -14,7 +14,7 @@
 
 	<div class ="form-group form">
 	<form action="login" method="post">
-	<div>
+	
 	<label>
 	User name:
 	</label>
@@ -38,6 +38,17 @@
 	<div class ="form-group form2">
 	<form action="register" method="post">
 	<div>
+
+	<label>
+	First name
+	</label>
+	<input type="text" id="fname" name="fname" placeholder="first name" class="form-control"/>
+	<br>
+	<label>
+	Last name
+	</label>
+	<input type="text" id="lname" name="lname" placeholder="last name" class="form-control"/>
+	<br>
 	<label>
 	User name:
 	</label>
@@ -60,13 +71,44 @@
 	</div>
 	<br>
 	<label>
+	town
+	</label>
+	<input type="text" id="town" name="town" placeholder="Town" class="form-control2"/>
+	<br>
+	<label>
+	county
+	</label>
+	<input type="text" id="county" name="county" placeholder="county" class="form-control2"/>
+	<br>
+	<label>
 	Payment Method
 	</label>
-	<input type="text" id="payment" name="payment" placeholder="payment" class="form-control2"/>
-
+	<label for="Shipping_Address" class="control-label">Payment
+										Type</label> <br><select id="payment" name="payment">
+										<option  value="1">Visa</option>
+										<option value="2">MasterCard</option>
+										<option value="3">PayPal</option>
+									</select>
+	<label>
+	<br>
+	<label>
+	Number
+	</label>
+	<input type="text" id="number" name="number" placeholder="number" class="form-control2"/>
+	<br>
+	Expiry date
+	</label>
+	<input type="number" id="date" name="date" placeholder="date" class="form-control2"/>
+	<br>
+	<label>
+	Expiry Year
+	</label>
+	<input type="number" id="year" name="year" placeholder="year" class="form-control2"/>
+	
 	
 	</div>
 	<button id="RegisterButton" class="form-control2">Register</button>
+	
 	</form>
 	
      
