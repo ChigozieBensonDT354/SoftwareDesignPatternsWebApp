@@ -366,8 +366,8 @@ private UserRepository userRepository;
     	item2.setTitle("burger");
     	//items.add(item);
     	//items.add(item2);
-    	itemRepo.save(item);
-    	itemRepo.save(item2);
+    	//itemRepo.save(item);
+    //	itemRepo.save(item2);
     	//*************** have this page displaying items from db 
     	//request.getSession().setAttribute("chosenID", id);
     	
@@ -380,14 +380,44 @@ private UserRepository userRepository;
    
     @RequestMapping(value = "/startCart", method = RequestMethod.POST)
     public String cartHome(HttpServletRequest request, Model model) {
+    	
+    	boolean state;
+    	StockState noStockState = new OutStock();
+    	StockState hasStockState = new InStock();
+    	
+    	
     	StockItem item = new StockItem();
     	item.setCategory("food");
     	item.setTitle("pizza");
     	item.setPrice(20.0);
+    	item.setQuantity(0);
     	
+    	if(item.getQuantity() <=0) {
+    		state = noStockState.stateOfStock();
+    		request.setAttribute("state", state);
+    		System.out.println("out of stock" + state);
+    	}
+    	else {
+    		state = hasStockState.stateOfStock();
+    		request.setAttribute("state", state);
+    		System.out.println("in stock" +state);
+    	}
+    	item.setItemState(state);
     //	item.setQuantity(10);
     	
     	StockItem item2 = new StockItem();
+    	item2.setQuantity(5);
+    	if(item2.getQuantity() <=0) {
+    		state = noStockState.stateOfStock();
+    		request.setAttribute("state", state);
+    		System.out.println("out of stock" + state);
+    	}
+    	else {
+    		state = hasStockState.stateOfStock();
+    		request.setAttribute("state", state);
+    		System.out.println("in stock" +state);
+    	}
+    	item2.setItemState(state);
     	item2.setCategory("food");
     	//item2.setQuantity(10);
     	item.setImage("http://topqualitypizzas.ca/wp-content/uploads/2015/11/GARDEN-VEGGIE-SUPREME.jpg");

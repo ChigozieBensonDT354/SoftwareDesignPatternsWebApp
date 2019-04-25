@@ -23,6 +23,19 @@ public class StockItem {
 		return id;
 	}
 	
+	private boolean itemState;
+	
+	public boolean getItemState() {
+		return itemState;
+	}
+
+
+	public void setItemState(boolean itemState) {
+		this.itemState = itemState;
+	}
+
+	
+	
 	
 	public StockItem() {
 		
@@ -36,15 +49,15 @@ public class StockItem {
 	Double price;
 	String category;
 	String String;
-//	int quantity;
-//	public int getQuantity() {
-//		return quantity;
-//	}
-//
-//
-//	public void setQuantity(int quantity) {
-//		this.quantity = quantity;
-//	}
+	int quantity;
+	public int getQuantity() {
+		return quantity;
+	}
+
+
+	public void setQuantity(int quantity) {
+	this.quantity = quantity;
+	}
 	
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
     List<Comment>comments = new ArrayList<>();
@@ -63,7 +76,8 @@ public class StockItem {
 	public String getTitle() {
 		return title;
 	}
-	public StockItem(int id, String title, String manufacturer, Double price, String category, String String) {
+	
+	public StockItem(int id, String title, String manufacturer, Double price, String category, String String, boolean itemState, int quantity) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -71,6 +85,8 @@ public class StockItem {
 		this.price = price;
 		this.category = category;
 		this.String = String;
+		this.itemState = itemState;
+		this.quantity = quantity;
 	}
 	public void setTitle(String title) {
 		this.title = title;
@@ -109,6 +125,14 @@ public class StockItem {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+
+	
+	public Boolean stateOfStock(StockState state) {
+		// TODO Auto-generated method stub
+		//itemState = state.get;
+		return state.stateOfStock();
 	}
 	
 	
