@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Payload;
 
+import org.eclipse.jdt.internal.compiler.util.Sorting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -145,13 +146,19 @@ private UserRepository userRepository;
 	public String searchProducts(Model model, @RequestParam("keyword") String keyword) {
 		ArrayList<StockItem> items = new ArrayList<>();
 		System.out.println("here " + itemservice.getAllItems().size());
+		
+			
+	
 		for(int i=0; i<itemservice.getAllItems().size();i++) {
 			//itemservice.getAllItems().get(i).getTitle().contains(keyword)
-			if(itemservice.getAllItems().get(i).getTitle().contains(keyword)  ) {
+			if(itemservice.getAllItems().get(i).getTitle().contains(keyword) || itemservice.getAllItems().get(i).getCategory().contains(keyword)) {
 				items.add(itemservice.getAllItems().get(i));
 			}
 		}
 		System.out.println(items.size());
+		SortingContext context = new SortingContext();
+		context.setSortingMethod(new SortByName());
+		context.descendingSort(items);
 		model.addAttribute("lists",items);
 		return "cart";
 	}
