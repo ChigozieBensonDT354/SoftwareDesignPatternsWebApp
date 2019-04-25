@@ -98,6 +98,13 @@ private UserRepository userRepository;
 			
 			
 		}
+		else if(name.equals("Admin") && password.equals("password")) {
+			UserType user1 = new Admin();
+			return user1.login();
+			//return "admin";
+		}
+		else {
+		
 	int id;
 		User loggedInUser = user;
 		id = loggedInUser.getId();
@@ -109,6 +116,7 @@ private UserRepository userRepository;
 		//session.setAttribute("loggedInUser", user);
 		
 		return "success";
+		}
 	}
 	ArrayList<StockItem>items = new ArrayList<>();
     @RequestMapping(value = "/login", method=RequestMethod.GET)
@@ -162,6 +170,13 @@ private UserRepository userRepository;
 		model.addAttribute("lists",items);
 		return "cart";
 	}
+    
+    @RequestMapping("/customerDetails")
+    public String customerDetails(HttpServletRequest request) {
+    	final ArrayList<User>customersArrayList;
+    	customersArrayList = (ArrayList<User>)userservice.getAllUsers();
+		return null;
+    }
     
     @RequestMapping(value="/register", method = RequestMethod.POST)
 	public String registration(@RequestParam String name, @RequestParam String password,@RequestParam String email, @RequestParam String address, @RequestParam String town, @RequestParam String county, 

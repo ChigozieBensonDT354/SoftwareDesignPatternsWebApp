@@ -1,5 +1,8 @@
 package com.example.softwarePatterns;
 
-public class Iterator {
+public interface Iterator {
 
+	public boolean hasNext();
+
+	public Object next();
 }
