@@ -252,17 +252,24 @@ private UserRepository userRepository;
 		return "itemhome";
     }
     Cart cart = new Cart();
-    
+    int originalStockQuantity;
+    StockItem originalItem;
     @RequestMapping(value = "/pay",  method = RequestMethod.POST)
-    public String pay(Model model, HttpServletRequest request, @RequestParam(value="itemId") int id) {
+    public String pay(Model model, HttpServletRequest request, @RequestParam(value="itemId") int id, @RequestParam int quantity) {
     	// id = (int) request.getSession().getAttribute("chosenID");
+    	
     	System.out.println("The id is " + id);
     	model.addAttribute("id", id);
     	StockItem item = itemservice.getItem(id);
     	System.out.println(item.getTitle());
+    	//originalItem = item;
     	if(cart.getItems().contains(item)) {
     		
     	}
+    	item.setInCartQuantity(item.getInCartQuantity() + quantity);
+    	System.out.println(item.getTitle() + " quantity in cart: " + item.getInCartQuantity());
+    	item.setQuantity(item.getQuantity() - quantity);
+    	System.out.println(item.getTitle() + " :quantity left in stock: " + item.getQuantity());
     	cart.getItems().add(item);
     	model.addAttribute("cartItems",cart.getItems());
     	User user = (User) request.getSession().getAttribute("user");
@@ -270,6 +277,37 @@ private UserRepository userRepository;
     	model.addAttribute("lists",this.items);
     	request.getSession().setAttribute("cart", cart);
     	System.out.println("THE SIZE OF THE CART IS " + cart.getItems().size() );
+    	itemRepo.save(item);
+    	//i can get the item id and then do find by id
+    	return "cart";
+    	
+    }
+    
+    @RequestMapping(value = "/clearItems",  method = RequestMethod.POST)
+    public String clearItem(Model model, HttpServletRequest request, @RequestParam(value="itemId") int id) {
+    	// id = (int) request.getSession().getAttribute("chosenID");
+    	
+    	System.out.println("The id is " + id);
+    	model.addAttribute("id", id);
+    	StockItem item = itemservice.getItem(id);
+    	System.out.println(item.getTitle());
+    	//originalItem = item;
+    	if(cart.getItems().contains(item)) {
+    		
+    	}
+    	item.setQuantity(item.getQuantity() + item.getInCartQuantity());
+    	item.setInCartQuantity(0);
+    	System.out.println(item.getTitle() + " quantity in cart: " + item.getInCartQuantity());
+    	
+    	System.out.println(item.getTitle() + " :quantity left in stock: " + item.getQuantity());
+    	cart.getItems().remove(item);
+    	model.addAttribute("cartItems",cart.getItems());
+    	User user = (User) request.getSession().getAttribute("user");
+    	user.setCart(cart);
+    	model.addAttribute("lists",this.items);
+    	request.getSession().setAttribute("cart", cart);
+    	System.out.println("THE SIZE OF THE CART IS " + cart.getItems().size() );
+    	itemRepo.save(item);
     	//i can get the item id and then do find by id
     	return "cart";
     	
@@ -429,6 +467,7 @@ private UserRepository userRepository;
     		System.out.println("in stock" +state);
     	}
     	item.setItemState(state);
+    	item.setInCartQuantity(0);
     //	item.setQuantity(10);
     	
     	StockItem item2 = new StockItem();
@@ -445,6 +484,7 @@ private UserRepository userRepository;
     	}
     	item2.setItemState(state);
     	item2.setCategory("food");
+    	item2.setInCartQuantity(0);
     	//item2.setQuantity(10);
     	item.setImage("http://topqualitypizzas.ca/wp-content/uploads/2015/11/GARDEN-VEGGIE-SUPREME.jpg");
         item2.setImage("https://png.pngtree.com/element_pic/17/02/23/8a1ce248ab44efc7b37adad0b7b2d933.jpg");

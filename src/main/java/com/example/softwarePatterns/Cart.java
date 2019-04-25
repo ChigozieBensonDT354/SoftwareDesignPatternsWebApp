@@ -51,7 +51,7 @@ public class Cart {
 	    
 	    for (StockItem item : items) {
 	 
-	total += item.getPrice();
+	total += item.getPrice() * item.getInCartQuantity();
 	    }
 	 
 	    return total;

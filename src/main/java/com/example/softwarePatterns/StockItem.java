@@ -25,6 +25,18 @@ public class StockItem {
 	
 	private boolean itemState;
 	
+	private int inCartQuantity;
+	
+	public int getInCartQuantity() {
+		return inCartQuantity;
+	}
+
+
+	public void setInCartQuantity(int inCartQuantity) {
+		this.inCartQuantity = inCartQuantity;
+	}
+
+
 	public boolean getItemState() {
 		return itemState;
 	}

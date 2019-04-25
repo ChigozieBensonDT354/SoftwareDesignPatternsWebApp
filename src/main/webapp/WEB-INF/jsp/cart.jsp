@@ -27,7 +27,10 @@ items</h2>
     </c:choose>
  
    <div class = "item"><div class="start"><img src="${items.image}" width="193", height="130"/>
-   <p class="title"><form method="post" action="pay"><input type="hidden" name="itemId" value="${items.id}"><button id="loginButton" class="form-control">${items.title}</button></form></p></div></div> </c:forEach>
+   <p class="title"><form method="post" action="pay"><input id="quantity" name="quantity" class="form-control mr-sm-2"
+					type="number" placeholder="Search"><input type="hidden" name="itemId" value="${items.id}"><button id="loginButton" class="form-control">Add ${items.title} quantity</button></form><br> <form action="clearItems" method="post">
+		<input type="hidden" name="itemId" value="${items.id}"><button id="itemButton" class="form-control">Clear ${items.title}s </button>
+		</form></p></div></div> </c:forEach>
        
   <br>
    	
