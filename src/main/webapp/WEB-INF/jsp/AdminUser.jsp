@@ -19,18 +19,13 @@
 		Manage your store here
 		<br>
 		<label>view items</label>
-		<form action="addItem" method="post">
-		<button id="itemButton" class="form-control">Add Item</button>
+		<form action="viewItems" method="post">
+		<button id="itemButton" class="form-control">VIEW ITEMS</button>
 		</form>
 		<br>
-		 <p>
-    items in your cart :<br />
-    <c:forEach var="items" items="${lists}">
-        ${items.title}<br />
-    </c:forEach>
-  </p>
-  	<form action="startCart" method="post">
-		<button id="cartButton" class="form-control">ENTER CART</button>
+
+  	<form action="AddItemsPage" method="post">
+		<button id="cartButton" class="form-control">ADD ITEMS</button>
 		</form>
    
 		

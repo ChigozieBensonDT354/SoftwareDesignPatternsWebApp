@@ -26,12 +26,15 @@ public class User implements UserType {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-    
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
-    private Set<Order>orders = new HashSet<>();
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = {CascadeType.MERGE})
+    private List<Order>orders = new ArrayList<>();
     /*@OneToMany
     private Set< Thought> thoughts = new HashSet<>();*/
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne (cascade = {
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+        })
     Cart cart;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
@@ -47,11 +50,13 @@ public class User implements UserType {
 		this.comments = comments;
 	}
 
-	public Set<Order> getOrders() {
+	
+
+	public List<Order> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(Set<Order> orders) {
+	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
 
@@ -76,7 +81,7 @@ public class User implements UserType {
     private String lName;
     
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
+    @OneToMany(cascade=CascadeType.ALL)
     List<Card>cards = new ArrayList<>();
     
     

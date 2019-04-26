@@ -89,14 +89,14 @@ public class StockItem {
 		return title;
 	}
 	
-	public StockItem(int id, String title, String manufacturer, Double price, String category, String String, boolean itemState, int quantity) {
+	public StockItem( String title, String manufacturer, Double price, String category, boolean itemState, int quantity, String image) {
 		super();
-		this.id = id;
+		//this.id = id;
 		this.title = title;
 		this.manufacturer = manufacturer;
 		this.price = price;
 		this.category = category;
-		this.String = String;
+		this.image = image;
 		this.itemState = itemState;
 		this.quantity = quantity;
 	}

@@ -43,9 +43,7 @@ the product id is ${id}!
     </c:forEach>
   </p>
 <br>
-<form action="confirmBuy" method="post">
-		<button id="itemButton" class="form-control">Confirm</button>
-		</form>
+
 <!-- 
     <h2>Hello 
 items</h2>

@@ -1,5 +1,6 @@
 package com.example.softwarePatterns;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -137,7 +138,7 @@ private UserRepository userRepository;
 		User n = new User();
 		n.setName(name);
 		n.setEmail(email);
-		userRepository.save(n);
+		//userRepository.save(n);
 		
 		StockItem item = new StockItem();
 		item.setTitle("First item");
@@ -179,8 +180,51 @@ private UserRepository userRepository;
     public String customerDetails(HttpServletRequest request) {
     	final ArrayList<User>customersArrayList;
     	customersArrayList = (ArrayList<User>)userservice.getAllUsers();
+    	UserList custsList = new UserList(customersArrayList);
+    	ArrayList<User>listAll = new ArrayList<User>();
+    	for(Iterator iterator = custsList.getIterator();iterator.hasNext();) {
+    		User name = (User) iterator.next();
+    		int id = name.getId();
+    		String fname= name.getfName();
+    		String lname = name.getlName();
+    		String password = name.getPassword();
+    		String address = name.getAddress();
+    		User user1 = new User(id,fname,lname,password,address);
+    		listAll.add(user1);
+    		
+    	}
+    	request.setAttribute("allUsers", listAll);
 		return null;
     }
+    
+    @RequestMapping("/AddItemsPage")
+    public String addItems(HttpServletRequest request) {
+    	final ArrayList<User>customersArrayList;
+    	customersArrayList = (ArrayList<User>)userservice.getAllUsers();
+		return "AdminAdd";
+    }
+    
+    @RequestMapping(value="/AddItem", method = RequestMethod.POST)
+   	public String addItem(@RequestParam String name, @RequestParam String category,@RequestParam String manufacturer,
+   			@RequestParam int quantity, @RequestParam Double price,@RequestParam File pic,HttpServletRequest request) {
+    	boolean state = false;
+    	StockState noStockState = new OutStock();
+    	StockState hasStockState = new InStock();
+    	if(quantity <=0) {
+    		state = noStockState.stateOfStock();
+    		request.setAttribute("state", state);
+    		System.out.println("out of stock" + state);
+    	}
+    	else {
+    		state = hasStockState.stateOfStock();
+    		request.setAttribute("state", state);
+    	}
+    		
+    	StockItem item = new StockItem(name,manufacturer,price,category,state,quantity,pic.getAbsolutePath());
+    	itemRepo.save(item);
+   	return "added";
+   		
+   	}
     
     @RequestMapping(value="/register", method = RequestMethod.POST)
 	public String registration(@RequestParam String name, @RequestParam String password,@RequestParam String email, @RequestParam String address, @RequestParam String town, @RequestParam String county, 
@@ -239,7 +283,7 @@ private UserRepository userRepository;
     	order.setCart(cart);
     	//order.getCart().getItems();
     	u.getOrders().add(order);
-    	userRepository.save(u);
+    	//userRepository.save(u);
     	
     	
     	System.out.print(u.getOrders().toString());
@@ -277,7 +321,7 @@ private UserRepository userRepository;
     	model.addAttribute("lists",this.items);
     	request.getSession().setAttribute("cart", cart);
     	System.out.println("THE SIZE OF THE CART IS " + cart.getItems().size() );
-    	itemRepo.save(item);
+    	//itemRepo.save(item);
     	//i can get the item id and then do find by id
     	return "cart";
     	
@@ -343,14 +387,15 @@ private UserRepository userRepository;
     	order.setName("Order: " + orderName);
     	order.setCart(user.getCart());
     	user.getOrders().add(order);
+    	System.out.println(user.getOrders().size());
     	cart.getItems();
     	//try {
-    	cartRepo.save(cart);
+   // cartRepo.save(cart);
     	//}catch (DataIntegrityViolationException e) {
 		//	// TODO: handle exception
     	//	System.out.println("history already exist");
 		//}
-    	orderrepo.save(order);
+    	//orderrepo.save(order);
     	
     	userRepository.save(user);
     	//userservice.updateUser(user.getId(), user);
@@ -493,8 +538,9 @@ private UserRepository userRepository;
     	item2.setPrice(30.0);
     	items.add(item);
     	items.add(item2);
-    	itemRepo.save(item);
-    	itemRepo.save(item2);
+    	//itemRepo.save(item);
+    	//itemRepo.save(item2);
+    	items.addAll(itemservice.getAllItems());
     	//*************** have this page displaying items from db 
     	//request.getSession().setAttribute("chosenID", id);
     	
