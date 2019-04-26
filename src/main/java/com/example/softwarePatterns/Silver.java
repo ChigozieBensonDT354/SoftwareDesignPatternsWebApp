@@ -2,13 +2,13 @@ package com.example.softwarePatterns;
 
 public class Silver implements LoyaltyCardDiscount {
 	
-	  private final String name;
+	 private static Silver instance = new Silver();
 
 	  
-	  public Silver(String name) {
-			this.name = name;
-
-		}
+	//Get the only object available
+	   public static Silver getInstance(){
+	      return instance;
+	   }
 
 	@Override
 	public double discount(double amount) {

@@ -2,7 +2,7 @@ package com.example.softwarePatterns;
 
 public class Standard implements LoyaltyCardDiscount {
 
-	private final String name;
+	private static Standard instance = new Standard();
 	
 	@Override
 	public double discount(double amount) {
@@ -11,9 +11,9 @@ public class Standard implements LoyaltyCardDiscount {
 		return amount;
 	}
 	
-	public Standard (String name) {
-		this.name = name;
-	
-	}
+	//Get the only object available
+	   public static Standard getInstance(){
+	      return instance;
+	   }
 
 }

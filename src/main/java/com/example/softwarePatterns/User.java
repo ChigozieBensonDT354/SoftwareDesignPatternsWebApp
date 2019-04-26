@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -81,18 +82,27 @@ public class User implements UserType {
     private String lName;
     
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade=CascadeType.ALL)
-    List<Card>cards = new ArrayList<>();
+    @OneToOne(cascade=CascadeType.ALL)
+   // List<Card>cards = new ArrayList<>();
+    Card card;
     
     
     
  
-	public List<Card> getCards() {
-		return cards;
+//	public List<Card> getCards() {
+//		return cards;
+//	}
+//
+//	public void setCards(List<Card> cards) {
+//		this.cards = cards;
+//	}
+
+	public Card getCard() {
+		return card;
 	}
 
-	public void setCards(List<Card> cards) {
-		this.cards = cards;
+	public void setCard(Card card) {
+		this.card = card;
 	}
 
 	public String getfName() {

@@ -4,6 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Comment {
@@ -17,6 +18,17 @@ public class Comment {
 //	
 //	@ManyToOne
 //	StockItem stockItem;
+	
+	@OneToOne
+	User user;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public int getRating() {
 		return rating;

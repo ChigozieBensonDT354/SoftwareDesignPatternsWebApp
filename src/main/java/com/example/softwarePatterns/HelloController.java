@@ -326,6 +326,7 @@ private UserRepository userRepository;
     	ArrayList<StockItem>items = new ArrayList<>();
         items = (ArrayList<StockItem>) itemservice.getAllItems();
         String comment = "";
+      
         
         StockItem item = itemservice.getItem(id);
         for(int i =0;i < item.getComments().size();i++) {
@@ -397,8 +398,8 @@ private UserRepository userRepository;
 		
 		
 			//System.out.println("Card is valid");
-			cardRepo.save(card);
-			user.getCards().add(card);
+			//cardRepo.save(card);
+			user.setCard(card);
 		
 		if(user == null) {
 			
@@ -574,7 +575,7 @@ private UserRepository userRepository;
         comment2.setContent(comment);
         comment2.setRating(rating);
         //comment2.setUser(user);
-        user.getComments().add(comment2);
+      comment2.setUser(user);
         StockItem item = itemservice.getItem(id);
         item.getComments().add(comment2);
        //comment2.setStockItem(item);
@@ -609,11 +610,13 @@ private UserRepository userRepository;
     	else if(loyaltyCard.equalsIgnoreCase("Silver"))
     	{
     		//NEED TO ADD SILVER
-    		cart.discount(new Silver(loyaltyCard));
+    		Silver silver = Silver.getInstance();
+    		cart.setTotal((cart.discount(silver)));
     	} else if(loyaltyCard.equalsIgnoreCase("Standard"))
     	{
     		//NEED TO ADD STANDARD
-    		cart.discount(new Standard(loyaltyCard));
+    		Standard standard = Standard.getInstance();
+    		cart.setTotal((cart.discount(standard)));
     	}
     	
     	System.out.println("The price is " + cart.getTotal());
