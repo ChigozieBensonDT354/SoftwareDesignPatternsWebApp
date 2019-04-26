@@ -30,7 +30,7 @@
     </c:forEach>
   </p>
   	<form action="startCart" method="post">
-		<button id="cartButton" class="form-control">ENTER CART</button>
+		<button id="cartButton" class="form-control">ENTER STORE</button>
 		</form>
    
 		

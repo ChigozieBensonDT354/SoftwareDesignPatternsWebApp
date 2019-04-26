@@ -54,7 +54,7 @@ items</h2>
 		<input type="hidden" name="itemId" value="${items.id}"><button id="itemButton" class="form-control">Clear ${items.title}s </button>
 		</form></p><br><form action="viewComments" method="post">
 		<input type="hidden" name="itemId" value="${items.id}"><button id="itemButton" class="form-control">View Comments</button>
-		</form><br>Average Rating: ${items.averageRating} </div></div> </c:forEach>
+		</form><br>Average Rating: ${items.averageRating}<br>In cart Quantity: ${items.inCartQuantity}</div></div> </c:forEach>
        
   <br>
    	

@@ -389,7 +389,7 @@ private UserRepository userRepository;
     
     @RequestMapping(value="/register", method = RequestMethod.POST)
 	public String registration(@RequestParam String name, @RequestParam String password,@RequestParam String email, @RequestParam String address, @RequestParam String town, @RequestParam String county, 
-			@RequestParam String number, @RequestParam String payment, @RequestParam String fname, @RequestParam String lname, @RequestParam int date, @RequestParam int year) {
+			@RequestParam String number, @RequestParam String payment, @RequestParam String fname, @RequestParam String lname, @RequestParam int date, @RequestParam int year, HttpServletRequest request) {
 		User user = userservice.register(name, password, email,address);
 		int type = Integer.parseInt(payment);
 		Card card = new Card(fname, lname, address, town, county, number, type, date, year);
@@ -407,6 +407,7 @@ private UserRepository userRepository;
 			
 		}
 		else {
+			request.getSession().setAttribute("user", user);
 			userRepository.save(user);
 		//userservice.addUser(user);s
 		//userservice.updateUser(user.getId(), user);
@@ -481,6 +482,7 @@ private UserRepository userRepository;
     	model.addAttribute("cartItems",cart.getItems());
     	User user = (User) request.getSession().getAttribute("user");
     	user.setCart(cart);
+    	itemRepo.save(item);
     	model.addAttribute("lists",this.items);
     	request.getSession().setAttribute("cart", cart);
     	System.out.println("THE SIZE OF THE CART IS " + cart.getItems().size() );
@@ -652,8 +654,8 @@ private UserRepository userRepository;
     	
     	
     	StockItem item = new StockItem();
-    	item.setCategory("food");
-    	item.setTitle("pizza");
+    	item.setCategory("electrics");
+    	item.setTitle("phone");
     	item.setPrice(20.0);
     	item.setQuantity(0);
     	
@@ -686,13 +688,13 @@ private UserRepository userRepository;
     	}
     	item2.setItemState(state);
     	item2.setManufacturer("lidl");
-    	item2.setCategory("food");
+    	item2.setCategory("electrics");
     	item2.setInCartQuantity(0);
     	//item2.setQuantity(10);
     	item.setImage("http://topqualitypizzas.ca/wp-content/uploads/2015/11/GARDEN-VEGGIE-SUPREME.jpg");
         item2.setImage("https://png.pngtree.com/element_pic/17/02/23/8a1ce248ab44efc7b37adad0b7b2d933.jpg");
         
-    	item2.setTitle("burger");
+    	item2.setTitle("tv");
     	item2.setPrice(30.0);
     	items.add(item);
     	items.add(item2);

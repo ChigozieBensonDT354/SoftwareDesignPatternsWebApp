@@ -8,9 +8,20 @@
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
-
 <form action="/searchProducts" method="GET"
 				class="form-inline my-2 my-lg-0">
+				<select id="type" name="type">
+										<option  value="title">Title</option>
+										<option value="price">Price</option>
+										<option value="manufacturer">Manufacturer</option>
+										<option value="category">Category</option>
+									</select>
+									<br>
+									<select id="style" name="style">
+										<option  value="Ascending">Ascending</option>
+										<option value="Descending">Descending</option>
+										
+									</select>
 				<input id="keyword" name="keyword" class="form-control mr-sm-2"
 					type="text" placeholder="Search">
 				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
