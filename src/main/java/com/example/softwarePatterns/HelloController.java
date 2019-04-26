@@ -117,7 +117,9 @@ private UserRepository userRepository;
 		}
 		else if(name.equals("Admin") && password.equals("password")) {
 			 user1 = new Admin();
+			 request.getSession().setAttribute("admin", name);
 			return user1.login();
+			
 			//return "admin";
 		}
 		else {
@@ -159,23 +161,88 @@ private UserRepository userRepository;
 	}
     
     @RequestMapping(value = "/searchProducts", method = RequestMethod.GET)
-	public String searchProducts(Model model, @RequestParam("keyword") String keyword) {
+	public String searchProducts(Model model, @RequestParam("keyword") String keyword, HttpServletRequest request, @RequestParam String style, @RequestParam String type) {
 		ArrayList<StockItem> items = new ArrayList<>();
-		System.out.println("here " + itemservice.getAllItems().size());
 		
-			
-	
+		System.out.println("here " + itemservice.getAllItems().size());
+		SortingContext context = new SortingContext();
 		for(int i=0; i<itemservice.getAllItems().size();i++) {
 			//itemservice.getAllItems().get(i).getTitle().contains(keyword)
-			if(itemservice.getAllItems().get(i).getTitle().contains(keyword) || itemservice.getAllItems().get(i).getCategory().contains(keyword)) {
-				items.add(itemservice.getAllItems().get(i));
+			if(type.equalsIgnoreCase("title")) {
+				if(itemservice.getAllItems().get(i).getTitle().contains(keyword)) {
+					items.add(itemservice.getAllItems().get(i));
+				}
+				context.setSortingMethod(new SortByName());
+				if(style.equalsIgnoreCase("Ascending")) {
+					context.ascendingSort(items);
+				}else if(style.equalsIgnoreCase("Descending")){
+					context.descendingSort(items);
+				}
+			
+			
+			}
+		}
+		for(int i=0; i<itemservice.getAllItems().size();i++) {
+			//itemservice.getAllItems().get(i).getTitle().contains(keyword)
+			if(type.equalsIgnoreCase("category")) {
+				if( itemservice.getAllItems().get(i).getCategory().contains(keyword)) {
+					items.add(itemservice.getAllItems().get(i));
+				}
+				context.setSortingMethod(new SortByCategory());
+				if(style.equalsIgnoreCase("Ascending")) {
+					context.ascendingSort(items);
+				}else if(style.equalsIgnoreCase("Descending")){
+					context.descendingSort(items);
+				}
+			
+			
+			}
+		}
+		for(int i=0; i<itemservice.getAllItems().size();i++) {
+			//itemservice.getAllItems().get(i).getTitle().contains(keyword)
+			if(type.equalsIgnoreCase("price")) {
+				Double usedPrice = Double.parseDouble(keyword);
+				if(itemservice.getAllItems().get(i).getPrice().equals(usedPrice)) {
+					items.add(itemservice.getAllItems().get(i));
+				}
+				context.setSortingMethod(new SortByPrice());
+				if(style.equalsIgnoreCase("Ascending")) {
+					context.ascendingSort(items);
+				}else if(style.equalsIgnoreCase("Descending")){
+					context.descendingSort(items);
+				}
+			
+			
+			}
+		}
+		for(int i=0; i<itemservice.getAllItems().size();i++) {
+			//itemservice.getAllItems().get(i).getTitle().contains(keyword)
+			if(type.equalsIgnoreCase("manufacturer")) {
+				if(itemservice.getAllItems().get(i).getManufacturer().equals(keyword) ) {
+					items.add(itemservice.getAllItems().get(i));
+				}
+				context.setSortingMethod(new SortByManufacturer());
+				if(style.equalsIgnoreCase("Ascending")) {
+					context.ascendingSort(items);
+				}
+				else if(style.equalsIgnoreCase("Descending")){
+					context.descendingSort(items);
+				}
+			
+			
 			}
 		}
 		System.out.println(items.size());
-		SortingContext context = new SortingContext();
-		context.setSortingMethod(new SortByName());
-		context.descendingSort(items);
+		
+		
+		
 		model.addAttribute("lists",items);
+		String userName = (String) request.getSession().getAttribute("admin");
+		if(userName !=null) {
+		if(userName.equalsIgnoreCase("Admin")) {
+			return "viewItems";
+		}
+		}
 		return "cart";
 	}
     
@@ -252,6 +319,20 @@ private UserRepository userRepository;
         items = (ArrayList<StockItem>) itemservice.getAllItems();
         model.addAttribute("lists",items);
 		return "viewItems";
+    }
+    
+    @RequestMapping(value= "/viewComments" , method = RequestMethod.POST)
+    public String viewComments(HttpServletRequest request,Model model, @RequestParam(value="itemId") int id) {
+    	ArrayList<StockItem>items = new ArrayList<>();
+        items = (ArrayList<StockItem>) itemservice.getAllItems();
+        String comment = "";
+        
+        StockItem item = itemservice.getItem(id);
+        for(int i =0;i < item.getComments().size();i++) {
+        	comment = comment + item.getComments().get(i).getContent() + "\n";
+        }
+        model.addAttribute("comment",comment);
+		return "viewComments";
     }
     
     @RequestMapping("/AddItemsPage")
@@ -585,6 +666,7 @@ private UserRepository userRepository;
     	}
     	item.setItemState(state);
     	item.setInCartQuantity(0);
+    	item.setManufacturer("aldi");
     //	item.setQuantity(10);
     	
     	StockItem item2 = new StockItem();
@@ -600,6 +682,7 @@ private UserRepository userRepository;
     		System.out.println("in stock" +state);
     	}
     	item2.setItemState(state);
+    	item2.setManufacturer("lidl");
     	item2.setCategory("food");
     	item2.setInCartQuantity(0);
     	//item2.setQuantity(10);

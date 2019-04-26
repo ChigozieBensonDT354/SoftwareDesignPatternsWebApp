@@ -111,14 +111,7 @@ public class User implements UserType {
 		this.lName = lName;
 	}
 
-	private String paymentMethod;
-   public String getPaymentMethod() {
-		return paymentMethod;
-	}
-
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
+	
 
 	// @OneToMany
     //ArrayList<StockItem> items = new ArrayList<>();

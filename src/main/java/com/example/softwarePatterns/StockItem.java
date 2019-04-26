@@ -65,6 +65,19 @@ public class StockItem {
 	public int getQuantity() {
 		return quantity;
 	}
+	
+	int averageRating;
+	
+
+
+	public int getAverageRating() {
+		return averageRating;
+	}
+
+
+	public void setAverageRating(int averageRating) {
+		this.averageRating = averageRating;
+	}
 
 
 	public void setQuantity(int quantity) {
