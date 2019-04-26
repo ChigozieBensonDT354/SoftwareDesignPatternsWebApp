@@ -31,10 +31,10 @@
 
  <p>
     Your bought items:<br />
-    <c:forEach var="customers" items="${allUsers}">
+    <c:forEach var="orders" items="${allOrders}">
         
        <div class = "item"><div class="start"><form action="orderDetails" method="POST">
-       <input type="hidden" name="email" value="${customers.email}"><button id="loginButton" class="form-control">${customers.email}</button></form><br><br><br><br></div></div>
+       <input type="hidden" name="email" value="${orders.name}"><button id="loginButton" class="form-control">${orders.name}</button></form><br><br><br><br></div></div>
        
 
     </c:forEach>

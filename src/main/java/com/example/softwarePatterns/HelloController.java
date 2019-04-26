@@ -62,6 +62,9 @@ private UserRepository userRepository;
 	@Autowired
 	CardRepository cardRepo;
 	
+	@Autowired
+	OrderService orderService;
+	
 	
 	@Autowired
 	CardValidator cardValidator = new CardValidator();
@@ -203,9 +206,48 @@ private UserRepository userRepository;
     	request.getSession().setAttribute("allUsers", listAll);
 		return "customerDetails";
     }
+    @RequestMapping(value= "/orderDetails" , method = RequestMethod.POST)
+    public String orderDetails(HttpServletRequest request,Model model,@RequestParam String email) {
+    	User u = userservice.getEmail(email);
+    	final ArrayList<Order>ordersArrayList;
+    	final ArrayList<Order>orders = new ArrayList<>();
+    	
+    	for(int i=0; i < u.getOrders().size();i++) {
+    		orders.add(u.getOrders().get(i));
+    	}
+    	ordersArrayList = (ArrayList<Order>)orderService.getAllOrders();
+//    	try {
+//    	for(int i =0; i < ordersArrayList.size();i++) {
+//    		if(ordersArrayList.contains(u.getOrders().get(i))) {
+//    			orders.add(ordersArrayList.get(i));
+//    		}
+//    	}
+//    	}catch (IndexOutOfBoundsException e) {
+//			// TODO: handle exception
+//    		e.printStackTrace();
+//		}
+    	
+    	OrderHistory history = new OrderHistory((ArrayList<Order>) orders);
+    	ArrayList<Order>listAll = new ArrayList<Order>();
+    	for(Iterator iterator = history.getIterator();iterator.hasNext();) {
+    	
+    		Order order = (Order) iterator.next();
+    		//int id = name.getId();
+    		//String fname= name.getfName();
+    	String name = order.getName();
+    		Order order1 = new Order(name);
+    		listAll.add(order1);
+    		
+    	}
+    	
+    	model.addAttribute("allOrders", listAll);
+    	System.out.println(listAll.size());
+    	request.getSession().setAttribute("allOrders", listAll);
+		return "orderDetails";
+    }
     
     @RequestMapping(value= "/viewItems" , method = RequestMethod.POST)
-    public String viewItems(HttpServletRequest request,Model model, @RequestParam(value="itemId") int id, @RequestParam int quantity) {
+    public String viewItems(HttpServletRequest request,Model model) {
     	ArrayList<StockItem>items = new ArrayList<>();
         items = (ArrayList<StockItem>) itemservice.getAllItems();
         model.addAttribute("lists",items);
@@ -240,6 +282,28 @@ private UserRepository userRepository;
    	return "added";
    		
    	}
+    
+    @RequestMapping(value = "/setQuantity",  method = RequestMethod.POST)
+    public String setQuantity(Model model, HttpServletRequest request, @RequestParam(value="itemId") int id, @RequestParam int quantity) {
+    	
+    	System.out.println("The id is " + id);
+    	model.addAttribute("id", id);
+    	StockItem item = itemservice.getItem(id);
+    	System.out.println(item.getTitle());
+    	//originalItem = item;
+    	
+    	
+    	item.setQuantity(quantity);
+    	System.out.println(item.getTitle() + " :quantity left in stock: " + item.getQuantity());
+    	ArrayList<StockItem>items = new ArrayList<>();
+        items = (ArrayList<StockItem>) itemservice.getAllItems();
+        model.addAttribute("lists",items);
+        itemRepo.save(item);
+    	//itemRepo.save(item);
+    	//i can get the item id and then do find by id
+    	return "viewItems";
+    	
+    }
     
     @RequestMapping(value="/register", method = RequestMethod.POST)
 	public String registration(@RequestParam String name, @RequestParam String password,@RequestParam String email, @RequestParam String address, @RequestParam String town, @RequestParam String county, 
@@ -330,6 +394,8 @@ private UserRepository userRepository;
     	item.setQuantity(item.getQuantity() - quantity);
     	System.out.println(item.getTitle() + " :quantity left in stock: " + item.getQuantity());
     	cart.getItems().add(item);
+    	cart.calcTotalCost();
+    	cart.setTotal(cart.calcTotalCost());
     	model.addAttribute("cartItems",cart.getItems());
     	User user = (User) request.getSession().getAttribute("user");
     	user.setCart(cart);
@@ -375,7 +441,7 @@ private UserRepository userRepository;
     @RequestMapping(value= "/confirmCart", method = RequestMethod.POST)
     public String confirmCart(Model model, HttpServletRequest request) {
     	model.addAttribute("cartItems",cart.getItems());
-//    	//Cart cart = (Cart) request.getSession().getAttribute("cart");
+    	//Cart cart = (Cart) request.getSession().getAttribute("cart");
 //    	User user = (User) request.getSession().getAttribute("user");
 //    	Order order = new Order();
 //    	order.setCart(user.getCart());
@@ -392,25 +458,21 @@ private UserRepository userRepository;
     
     @RequestMapping(value= "/confirmBuy", method = RequestMethod.POST)
     public String confirmBuy(Model model, HttpServletRequest request) {
-    	//Cart cart = (Cart) request.getSession().getAttribute("cart");
+    	Cart cart = (Cart) request.getSession().getAttribute("cart");
     	User user = (User) request.getSession().getAttribute("user");
     	Order order = new Order();
     	String orderName ="";
+    	order.setCart(user.getCart());
     	for(StockItem stock: user.getCart().getItems()) {
     		orderName = orderName + " " + stock.getTitle();
     	}
-    	order.setName("Order: " + orderName);
-    	order.setCart(user.getCart());
+    	
+    	order.setName("Order: " + orderName + " " + order.getCart().getTotal());
+    	
     	user.getOrders().add(order);
     	System.out.println(user.getOrders().size());
     	cart.getItems();
-    	//try {
-   // cartRepo.save(cart);
-    	//}catch (DataIntegrityViolationException e) {
-		//	// TODO: handle exception
-    	//	System.out.println("history already exist");
-		//}
-    	//orderrepo.save(order);
+
     	
     	userRepository.save(user);
     	//userservice.updateUser(user.getId(), user);
@@ -488,12 +550,7 @@ private UserRepository userRepository;
         item2.setImage("https://png.pngtree.com/element_pic/17/02/23/8a1ce248ab44efc7b37adad0b7b2d933.jpg");
         
     	item2.setTitle("burger");
-    	//items.add(item);
-    	//items.add(item2);
-    	//itemRepo.save(item);
-    //	itemRepo.save(item2);
-    	//*************** have this page displaying items from db 
-    	//request.getSession().setAttribute("chosenID", id);
+
     	
     	model.addAttribute("lists",this.items);
     	User u = (User) request.getSession().getAttribute("user");
@@ -553,8 +610,8 @@ private UserRepository userRepository;
     	item2.setPrice(30.0);
     	items.add(item);
     	items.add(item2);
-    	//itemRepo.save(item);
-    	//itemRepo.save(item2);
+    	itemRepo.save(item);
+    	itemRepo.save(item2);
     	items.addAll(itemservice.getAllItems());
     	//*************** have this page displaying items from db 
     	//request.getSession().setAttribute("chosenID", id);

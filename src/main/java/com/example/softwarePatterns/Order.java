@@ -23,6 +23,11 @@ import javax.persistence.Table;
 	  
 
 
+		public Order(String name) {
+			super();
+			this.name = name;
+		}
+
 		public String getName() {
 			return name;
 		}
