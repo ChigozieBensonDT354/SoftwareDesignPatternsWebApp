@@ -78,7 +78,7 @@ public class StockItem {
 
 	public List<Comment> getComments() {
 		return comments;
-	}
+	} 
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
