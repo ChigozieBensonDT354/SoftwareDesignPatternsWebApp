@@ -4,8 +4,6 @@
    "http://www.w3.org/TR/html4/loose.dtd">
    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-   
-
 <html>
     <head>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
@@ -14,7 +12,7 @@
     </head>
     <body>
     <h2 class="hello-title">Hello Admin</h2>
-<h1>WELCOME${userName}</h1>
+
 		<br>
 		Manage your store here
 		<br>
@@ -27,15 +25,11 @@
   	<form action="AddItemsPage" method="post">
 		<button id="cartButton" class="form-control">ADD ITEMS</button>
 		</form>
-   
-		
-		
-		
-			
+			<br>
 
-	
-	
+  	<form action="allCustomers" method="post">
+		<button id="cartButton" class="form-control">VIEW CUSTOMERS</button>
+		</form>
 
-	
     </body>
 </html>

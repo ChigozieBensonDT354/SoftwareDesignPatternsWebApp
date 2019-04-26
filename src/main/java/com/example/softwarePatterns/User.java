@@ -186,8 +186,8 @@ public class User implements UserType {
 		
 	}
 	
-	public User(int id, String name, String email, String password, String address) {
-		this.id = id;
+	public User( String name, String email, String password, String address) {
+		//this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;

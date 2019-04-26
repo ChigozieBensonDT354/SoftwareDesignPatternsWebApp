@@ -55,8 +55,8 @@ public class UserService {
 		List<User>users = new ArrayList<>();
 		
 		userRepo.findAll().forEach(users::add);
-		int id = users.size() +1;
-		User u1 = new User(id, name,email,password,address);
+		//int id = users.size() +1;
+		User u1 = new User( name,email,password,address);
 		
 		
 		

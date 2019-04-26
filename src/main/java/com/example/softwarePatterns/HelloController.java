@@ -176,25 +176,40 @@ private UserRepository userRepository;
 		return "cart";
 	}
     
-    @RequestMapping("/customerDetails")
-    public String customerDetails(HttpServletRequest request) {
+    @RequestMapping(value= "/allCustomers" , method = RequestMethod.POST)
+    public String customerDetails(HttpServletRequest request,Model model) {
     	final ArrayList<User>customersArrayList;
     	customersArrayList = (ArrayList<User>)userservice.getAllUsers();
     	UserList custsList = new UserList(customersArrayList);
     	ArrayList<User>listAll = new ArrayList<User>();
     	for(Iterator iterator = custsList.getIterator();iterator.hasNext();) {
     		User name = (User) iterator.next();
-    		int id = name.getId();
-    		String fname= name.getfName();
-    		String lname = name.getlName();
+    		//int id = name.getId();
+    		//String fname= name.getfName();
+    		String userName = name.getName();
+    		String email = name.getEmail();
+    		//String lname = name.getlName();
     		String password = name.getPassword();
     		String address = name.getAddress();
-    		User user1 = new User(id,fname,lname,password,address);
+    		User user1 = new User(userName,email,password,address);
     		listAll.add(user1);
     		
     	}
-    	request.setAttribute("allUsers", listAll);
-		return null;
+    	for(int i=0; i <listAll.size();i++) {
+    		System.out.println(listAll.get(i).getEmail());
+    	}
+    	model.addAttribute("allUsers", listAll);
+    	System.out.println(listAll.size());
+    	request.getSession().setAttribute("allUsers", listAll);
+		return "customerDetails";
+    }
+    
+    @RequestMapping(value= "/viewItems" , method = RequestMethod.POST)
+    public String viewItems(HttpServletRequest request,Model model, @RequestParam(value="itemId") int id, @RequestParam int quantity) {
+    	ArrayList<StockItem>items = new ArrayList<>();
+        items = (ArrayList<StockItem>) itemservice.getAllItems();
+        model.addAttribute("lists",items);
+		return "viewItems";
     }
     
     @RequestMapping("/AddItemsPage")
@@ -246,9 +261,9 @@ private UserRepository userRepository;
 			
 		}
 		else {
-			
+			userRepository.save(user);
 		//userservice.addUser(user);s
-		userservice.updateUser(user.getId(), user);
+		//userservice.updateUser(user.getId(), user);
 		return "success";
 		}
 		
